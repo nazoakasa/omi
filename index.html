@@ -383,7 +383,15 @@
             document.querySelector('.stick').classList.remove('pulled');
             document.getElementById('result').classList.remove('show');
             document.querySelector('.instruction').style.display = 'block';
+            
         }
+
+        function postToX() {
+        const level = document.getElementById('fortuneLevel').textContent;
+        const text = `🎍2026年おみくじ結果🎍\n運勢：${level}\n\n#おみくじ #新年 #2026年`;
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+  }
 
         // カウントダウン
         function updateCountdown() {
