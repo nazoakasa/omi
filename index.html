@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新年おみくじ 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro', 'Yu Gothic', 'メイリオ', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f5f5f5;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .snow {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #d4145a;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .year {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .omikuji-box {
+            width: 200px;
+            height: 300px;
+            margin: 0 auto 30px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .omikuji-box:hover {
+            transform: scale(1.05);
+        }
+
+        .box {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #ff6b6b, #d4145a);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(212, 20, 90, 0.4);
+        }
+
+        .box::before {
+            content: '御神籤';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: white;
+            font-weight: bold;
+            writing-mode: vertical-rl;
+        }
+
+        .stick {
+            position: absolute;
+            width: 15px;
+            height: 180px;
+            background: linear-gradient(to bottom, #f4e6d2, #d4a574);
+            border-radius: 7px;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .omikuji-box.shaking {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .stick.pulled {
+            top: -150px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .result {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fortune-level {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #d4145a;
+        }
+
+        .fortune-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+
+        .category {
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        .category-label {
+            font-weight: bold;
+            color: #d4145a;
+            display: inline-block;
+            width: 80px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .instruction {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎍 新年おみくじ 🎍</h1>
+        <div class="year">2026年</div>
+        
+        <div id="omikujiBox" class="omikuji-box">
+            <div class="box"></div>
+            <div class="stick"></div>
+        </div>
+        
+        <div class="instruction">おみくじ箱をクリックして運勢を占おう！</div>
+        
+        <div id="result" class="result">
+            <div class="fortune-level" id="fortuneLevel"></div>
+            <div class="fortune-text" id="fortuneText"></div>
+            <div class="category">
+                <span class="category-label">恋愛運：</span>
+                <span id="love"></span>
+            </div>
+            <div class="category">
+                <span class="category-label">金運：</span>
+                <span id="money"></span>
+            </div>
+            <div class="category">
+                <span class="category-label">健康運：</span>
+                <span id="health"></span>
+            </div>
+            <div class="category">
+                <span class="category-label">仕事運：</span>
+                <span id="work"></span>
+            </div>
+            <button onclick="reset()">もう一度引く</button>
+        </div>
+    </div>
+
+    <script>
+        const fortunes = [
+            {
+                level: '大吉',
+                text: '素晴らしい一年となるでしょう。新しいチャレンジに積極的に取り組むことで、思いがけない幸運に恵まれます。',
+                love: '💕 理想の出会いがありそう',
+                money: '💰 臨時収入の予感',
+                health: '✨ 絶好調',
+                work: '🚀 大きな成功を収める'
+            },
+            {
+                level: '中吉',
+                text: '安定した運気です。焦らず着実に進めば、必ず良い結果が得られます。周りの人との協力が鍵となります。',
+                love: '💗 じっくり育む関係',
+                money: '💵 堅実な収入',
+                health: '😊 良好',
+                work: '📈 着実に前進'
+            },
+            {
+                level: '小吉',
+                text: '小さな幸せが積み重なる年です。日々の感謝を忘れずに過ごすことで、運気は上昇していきます。',
+                love: '💝 穏やかな関係',
+                money: '💴 コツコツ貯蓄',
+                health: '🌸 まずまず',
+                work: '📝 真面目な努力が実る'
+            },
+            {
+                level: '吉',
+                text: '順調な運気です。自分を信じて行動すれば、望む結果が得られるでしょう。新しい趣味にも良い時期です。',
+                love: '💖 良い雰囲気',
+                money: '💲 安定',
+                health: '🌟 元気',
+                work: '💼 順調'
+            },
+            {
+                level: '末吉',
+                text: '後半に向けて運気が上昇します。今は準備の時期と考え、力を蓄えましょう。忍耐が大切です。',
+                love: '💐 ゆっくりと',
+                money: '💹 後半期待',
+                health: '🍀 注意深く',
+                work: '⏰ 時を待つ'
+            }
+        ];
+
+        let pulled = false;
+
+        // 雪の演出
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.className = 'snow';
+            snow.style.left = Math.random() * 100 + '%';
+            snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snow.style.opacity = Math.random();
+            snow.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+            document.body.appendChild(snow);
+
+            setTimeout(() => snow.remove(), 5000);
+        }
+
+        setInterval(createSnow, 200);
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.getElementById('omikujiBox').addEventListener('click', function() {
+            if (pulled) return;
+            
+            pulled = true;
+            this.classList.add('shaking');
+            
+            setTimeout(() => {
+                const stick = this.querySelector('.stick');
+                stick.classList.add('pulled');
+                
+                setTimeout(() => {
+                    showFortune();
+                }, 500);
+            }, 500);
+        });
+
+        function showFortune() {
+            const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            
+            document.getElementById('fortuneLevel').textContent = fortune.level;
+            document.getElementById('fortuneText').textContent = fortune.text;
+            document.getElementById('love').textContent = fortune.love;
+            document.getElementById('money').textContent = fortune.money;
+            document.getElementById('health').textContent = fortune.health;
+            document.getElementById('work').textContent = fortune.work;
+            
+            document.getElementById('result').classList.add('show');
+            document.querySelector('.instruction').style.display = 'none';
+        }
+
+        function reset() {
+            pulled = false;
+            document.getElementById('omikujiBox').classList.remove('shaking');
+            document.querySelector('.stick').classList.remove('pulled');
+            document.getElementById('result').classList.remove('show');
+            document.querySelector('.instruction').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
