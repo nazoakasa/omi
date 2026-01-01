@@ -18,8 +18,8 @@
             justify-content: center;
             align-items: center;
             background: #f5f5f5;
-            overflow: hidden;
             position: relative;
+            padding: 20px 0;
         }
 
         .snow {
@@ -181,6 +181,33 @@
             font-size: 0.9em;
             margin-top: 15px;
         }
+
+        .countdown {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(212, 20, 90, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(212, 20, 90, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 1em;
+            color: #d4145a;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .countdown-timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            font-family: 'Courier New', monospace;
+        }
+
+        .countdown-unit {
+            font-size: 0.8em;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -215,6 +242,11 @@
                 <span id="work"></span>
             </div>
             <button onclick="reset()">もう一度引く</button>
+        </div>
+
+        <div class="countdown">
+            <div class="countdown-title">🎌 2026年終了まで 🎌</div>
+            <div class="countdown-timer" id="countdown">計算中...</div>
         </div>
     </div>
 
@@ -326,6 +358,33 @@
             document.getElementById('result').classList.remove('show');
             document.querySelector('.instruction').style.display = 'block';
         }
+
+        // カウントダウン
+        function updateCountdown() {
+            const now = new Date();
+            const endOf2026 = new Date('2027-01-01T00:00:00');
+            const diff = endOf2026 - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = '🎉 2026年が終了しました！ 🎉';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = `
+                ${days}<span class="countdown-unit">日</span> 
+                ${hours}<span class="countdown-unit">時間</span> 
+                ${minutes}<span class="countdown-unit">分</span> 
+                ${seconds}<span class="countdown-unit">秒</span>
+            `;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
