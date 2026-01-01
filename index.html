@@ -182,6 +182,16 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
+       .button-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        }
+
+        .x-button {
+         background: linear-gradient(145deg, #000000, #14171a);
+         }
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 7px 20px rgba(102, 126, 234, 0.6);
@@ -252,7 +262,12 @@
                 <span class="category-label">仕事運：</span>
                 <span id="work"></span>
             </div>
-            <button onclick="reset()">もう一度引く</button>
+            
+              <div class="button-group">
+        <button onclick="reset()">もう一度引く</button>
+        <button onclick="postToX()" class="x-button">𝕏でシェア</button>
+    </div>
+</div>
         </div>
 
         <div class="countdown">
